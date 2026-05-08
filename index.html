@@ -1,0 +1,1452 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LaLaLand様 AI実装支援 — お打ち合わせ共有資料</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --c-bg: #FAFAF8;
+    --c-surface: #FFFFFF;
+    --c-surface-warm: #F7F5F0;
+    --c-surface-accent: #F0EDE5;
+    --c-text: #2C2A25;
+    --c-text-sub: #6B6760;
+    --c-text-light: #9B9790;
+    --c-accent: #D4854A;
+    --c-accent-deep: #B86D38;
+    --c-accent-soft: #E8C4A0;
+    --c-accent-bg: #FDF6EF;
+    --c-border: #E8E5DE;
+    --c-tag-eco: #4A8B6E;
+    --c-tag-eco-bg: #EDF6F1;
+    --c-tag-labor: #5A7BBF;
+    --c-tag-labor-bg: #EDF2FA;
+    --c-tag-info: #8B6EC0;
+    --c-tag-info-bg: #F3EFF9;
+    --c-tag-corp: #C07A4A;
+    --c-tag-corp-bg: #FDF3EC;
+    --c-tag-mkt: #BF5A7B;
+    --c-tag-mkt-bg: #FAEDF2;
+    --c-tag-edu: #5A9EBF;
+    --c-tag-edu-bg: #EDF6FA;
+    --c-tag-line: #06C755;
+    --c-tag-line-bg: #EDFAEF;
+    --c-tag-dbox: #0061FF;
+    --c-tag-dbox-bg: #EDF2FF;
+    --c-tag-self: #9B8B5A;
+    --c-tag-self-bg: #F7F5EC;
+    --c-tag-nursery: #7BAF5A;
+    --c-tag-nursery-bg: #F0F7EC;
+    --radius: 14px;
+    --radius-sm: 8px;
+    --shadow-card: 0 1px 3px rgba(44,42,37,0.04), 0 6px 16px rgba(44,42,37,0.03);
+    --shadow-hover: 0 4px 12px rgba(44,42,37,0.07), 0 12px 32px rgba(44,42,37,0.05);
+    --font-en: 'Outfit', sans-serif;
+    --font-jp: 'Noto Sans JP', sans-serif;
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--font-jp);
+    background: var(--c-bg);
+    color: var(--c-text);
+    line-height: 1.85;
+    font-size: 15px;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  /* ===== HERO ===== */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 80px 24px 60px;
+    overflow: hidden;
+    background: linear-gradient(160deg, #FAFAF8 0%, #F7F0E8 40%, #FDF6EF 70%, #FAFAF8 100%);
+  }
+
+  .hero-canvas {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .hero-label {
+    font-family: var(--font-en);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--c-accent);
+    margin-bottom: 28px;
+    opacity: 0;
+    animation: fadeUp 0.9s cubic-bezier(0.23,1,0.32,1) forwards;
+    animation-delay: 0.3s;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero h1 {
+    font-size: clamp(28px, 5vw, 50px);
+    font-weight: 700;
+    line-height: 1.4;
+    letter-spacing: -0.5px;
+    margin-bottom: 24px;
+    opacity: 0;
+    animation: fadeUp 0.9s cubic-bezier(0.23,1,0.32,1) forwards;
+    animation-delay: 0.5s;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero h1 .hl {
+    display: inline;
+    background: linear-gradient(transparent 60%, var(--c-accent-soft) 60%);
+    padding-bottom: 2px;
+  }
+
+  .hero-sub {
+    font-size: 16px;
+    color: var(--c-text-sub);
+    max-width: 560px;
+    line-height: 1.95;
+    opacity: 0;
+    animation: fadeUp 0.9s cubic-bezier(0.23,1,0.32,1) forwards;
+    animation-delay: 0.7s;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-meta {
+    margin-top: 52px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 36px;
+    opacity: 0;
+    animation: fadeUp 0.9s cubic-bezier(0.23,1,0.32,1) forwards;
+    animation-delay: 0.9s;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-meta dt {
+    font-family: var(--font-en);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--c-accent);
+    margin-bottom: 4px;
+  }
+
+  .hero-meta dd {
+    font-size: 13px;
+    color: var(--c-text-sub);
+  }
+
+  .hero-scroll-hint {
+    position: absolute;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    animation: fadeUp 0.9s cubic-bezier(0.23,1,0.32,1) forwards 1.3s, float 2.5s ease-in-out infinite 2.2s;
+    z-index: 1;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(8px); }
+  }
+
+  /* ===== TOC ===== */
+  .toc {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(250,250,248,0.8);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--c-border);
+    padding: 0 24px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    transition: box-shadow 0.3s;
+  }
+
+  .toc.scrolled { box-shadow: 0 2px 16px rgba(44,42,37,0.06); }
+
+  .toc-inner {
+    max-width: 960px;
+    margin: 0 auto;
+    display: flex;
+    gap: 2px;
+    white-space: nowrap;
+    padding: 8px 0;
+  }
+
+  .toc a {
+    display: block;
+    padding: 8px 16px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--c-text-sub);
+    text-decoration: none;
+    border-radius: 8px;
+    transition: all 0.25s;
+    position: relative;
+  }
+
+  .toc a:hover,
+  .toc a.active {
+    color: var(--c-accent);
+    background: var(--c-accent-bg);
+  }
+
+  .toc::-webkit-scrollbar { height: 0; }
+
+  /* ===== SECTION LAYOUT ===== */
+  .section {
+    max-width: 840px;
+    margin: 0 auto;
+    padding: 88px 24px;
+  }
+
+  .section-label {
+    font-family: var(--font-en);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--c-accent);
+    margin-bottom: 12px;
+  }
+
+  .section-title {
+    font-size: clamp(22px, 3.5vw, 34px);
+    font-weight: 700;
+    line-height: 1.45;
+    margin-bottom: 16px;
+    letter-spacing: -0.3px;
+  }
+
+  .section-lead {
+    font-size: 15px;
+    color: var(--c-text-sub);
+    max-width: 640px;
+    line-height: 1.95;
+    margin-bottom: 52px;
+  }
+
+  .divider {
+    max-width: 840px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  .divider hr {
+    border: none;
+    height: 1px;
+    background: var(--c-border);
+  }
+
+  /* ===== SVG ICON CONTAINERS ===== */
+  .icon-box {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: transform 0.3s cubic-bezier(0.23,1,0.32,1);
+  }
+
+  .icon-box svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  /* ===== CONCERN CARDS ===== */
+  .concern-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+  }
+
+  .concern-card {
+    background: var(--c-surface);
+    border: 1px solid var(--c-border);
+    border-radius: var(--radius);
+    padding: 28px;
+    box-shadow: var(--shadow-card);
+    transition: all 0.4s cubic-bezier(0.23,1,0.32,1);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .concern-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: var(--radius);
+    opacity: 0;
+    transition: opacity 0.4s;
+    pointer-events: none;
+    background: radial-gradient(600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(212,133,74,0.04), transparent 60%);
+  }
+
+  .concern-card:hover {
+    box-shadow: var(--shadow-hover);
+    transform: translateY(-3px);
+    border-color: var(--c-accent-soft);
+  }
+
+  .concern-card:hover::after { opacity: 1; }
+
+  .concern-card:hover .icon-box { transform: scale(1.08) rotate(-3deg); }
+
+  .concern-card .icon-box { margin-bottom: 18px; }
+
+  .concern-card h3 {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    line-height: 1.55;
+  }
+
+  .concern-card p {
+    font-size: 13px;
+    color: var(--c-text-sub);
+    line-height: 1.85;
+  }
+
+  /* ===== DIRECTION BLOCK ===== */
+  .direction-block {
+    background: var(--c-surface);
+    border: 1px solid var(--c-border);
+    border-radius: var(--radius);
+    padding: 36px;
+    margin-bottom: 20px;
+    box-shadow: var(--shadow-card);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.23,1,0.32,1);
+  }
+
+  .direction-block:hover {
+    box-shadow: var(--shadow-hover);
+    transform: translateY(-2px);
+  }
+
+  .direction-block::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    border-radius: 4px 0 0 4px;
+    transition: width 0.4s cubic-bezier(0.23,1,0.32,1);
+  }
+
+  .direction-block:hover::before { width: 6px; }
+
+  .direction-block.phase1::before { background: var(--c-tag-eco); }
+  .direction-block.phase2::before { background: var(--c-tag-info); }
+  .direction-block.phase3::before { background: var(--c-tag-edu); }
+
+  .direction-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 14px;
+  }
+
+  .direction-number {
+    font-family: var(--font-en);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  .phase1 .direction-number { color: var(--c-tag-eco); }
+  .phase2 .direction-number { color: var(--c-tag-info); }
+  .phase3 .direction-number { color: var(--c-tag-edu); }
+
+  .direction-block h3 {
+    font-size: 19px;
+    font-weight: 700;
+    margin-bottom: 14px;
+    line-height: 1.5;
+  }
+
+  .direction-block > p {
+    font-size: 14px;
+    color: var(--c-text-sub);
+    line-height: 1.9;
+    margin-bottom: 20px;
+  }
+
+  .direction-detail {
+    background: var(--c-surface-warm);
+    border-radius: var(--radius-sm);
+    padding: 22px;
+    font-size: 13px;
+    line-height: 1.9;
+    color: var(--c-text-sub);
+  }
+
+  .direction-detail strong {
+    color: var(--c-text);
+    font-weight: 600;
+  }
+
+  /* ===== THEME LIST ===== */
+  .theme-category {
+    margin-bottom: 36px;
+  }
+
+  .theme-category-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--c-border);
+  }
+
+  .theme-category-header .cat-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .theme-category-header .cat-icon svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .theme-category-header h3 {
+    font-size: 16px;
+    font-weight: 600;
+  }
+
+  .theme-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding-left: 46px;
+  }
+
+  .theme-item {
+    display: inline-block;
+    font-size: 13px;
+    color: var(--c-text-sub);
+    background: var(--c-surface);
+    border: 1px solid var(--c-border);
+    border-radius: 20px;
+    padding: 6px 16px;
+    line-height: 1.4;
+    transition: all 0.3s cubic-bezier(0.23,1,0.32,1);
+    cursor: default;
+  }
+
+  .theme-item:hover {
+    border-color: var(--c-accent-soft);
+    background: var(--c-accent-bg);
+    color: var(--c-text);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(212,133,74,0.08);
+  }
+
+  /* ===== STAT COUNTER ===== */
+  .stat-bar {
+    display: flex;
+    justify-content: center;
+    gap: 48px;
+    flex-wrap: wrap;
+    margin-bottom: 56px;
+    padding: 32px 0;
+    border: 1px solid var(--c-border);
+    border-radius: var(--radius);
+    background: var(--c-surface);
+    box-shadow: var(--shadow-card);
+  }
+
+  .stat-item {
+    text-align: center;
+  }
+
+  .stat-num {
+    font-family: var(--font-en);
+    font-size: 42px;
+    font-weight: 800;
+    letter-spacing: -2px;
+    color: var(--c-accent);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: var(--c-text-light);
+    font-weight: 500;
+  }
+
+  /* ===== ROADMAP ===== */
+  .roadmap {
+    position: relative;
+    padding-left: 36px;
+  }
+
+  .roadmap::before {
+    content: '';
+    position: absolute;
+    left: 13px;
+    top: 8px;
+    bottom: 8px;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--c-accent), var(--c-tag-info), var(--c-tag-eco), var(--c-tag-mkt));
+    border-radius: 2px;
+  }
+
+  .roadmap-step {
+    position: relative;
+    margin-bottom: 40px;
+    padding: 24px;
+    background: var(--c-surface);
+    border: 1px solid var(--c-border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-card);
+    transition: all 0.4s cubic-bezier(0.23,1,0.32,1);
+  }
+
+  .roadmap-step:last-child { margin-bottom: 0; }
+
+  .roadmap-step:hover {
+    box-shadow: var(--shadow-hover);
+    transform: translateX(4px);
+  }
+
+  .roadmap-dot {
+    position: absolute;
+    left: -36px;
+    top: 28px;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--c-surface);
+    border: 3px solid var(--c-accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s;
+    box-shadow: 0 0 0 4px var(--c-bg);
+  }
+
+  .roadmap-step:hover .roadmap-dot { transform: scale(1.15); }
+
+  .roadmap-dot .dot-inner {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--c-accent);
+  }
+
+  .roadmap-step:nth-child(2) .roadmap-dot { border-color: var(--c-tag-info); }
+  .roadmap-step:nth-child(2) .roadmap-dot .dot-inner { background: var(--c-tag-info); }
+  .roadmap-step:nth-child(3) .roadmap-dot { border-color: var(--c-tag-eco); }
+  .roadmap-step:nth-child(3) .roadmap-dot .dot-inner { background: var(--c-tag-eco); }
+  .roadmap-step:nth-child(4) .roadmap-dot { border-color: var(--c-tag-mkt); }
+  .roadmap-step:nth-child(4) .roadmap-dot .dot-inner { background: var(--c-tag-mkt); }
+
+  .roadmap-step h4 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    line-height: 1.5;
+  }
+
+  .roadmap-step .phase-label {
+    font-family: var(--font-en);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .roadmap-step:nth-child(1) .phase-label { color: var(--c-accent); }
+  .roadmap-step:nth-child(2) .phase-label { color: var(--c-tag-info); }
+  .roadmap-step:nth-child(3) .phase-label { color: var(--c-tag-eco); }
+  .roadmap-step:nth-child(4) .phase-label { color: var(--c-tag-mkt); }
+
+  .roadmap-step p {
+    font-size: 14px;
+    color: var(--c-text-sub);
+    line-height: 1.9;
+  }
+
+  /* ===== NEXT STEPS ===== */
+  .next-steps-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .next-step-item {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    background: var(--c-surface);
+    border: 1px solid var(--c-border);
+    border-radius: var(--radius);
+    padding: 22px 28px;
+    box-shadow: var(--shadow-card);
+    transition: all 0.4s cubic-bezier(0.23,1,0.32,1);
+  }
+
+  .next-step-item:hover {
+    box-shadow: var(--shadow-hover);
+    transform: translateX(4px);
+    border-color: var(--c-accent-soft);
+  }
+
+  .next-step-num {
+    font-family: var(--font-en);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--c-accent);
+    background: var(--c-accent-bg);
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 2px;
+    transition: all 0.3s;
+  }
+
+  .next-step-item:hover .next-step-num {
+    background: var(--c-accent);
+    color: white;
+  }
+
+  .next-step-item p {
+    font-size: 14px;
+    line-height: 1.85;
+    color: var(--c-text);
+  }
+
+  .next-step-item p strong { font-weight: 600; }
+
+  /* ===== MESSAGE BOX ===== */
+  .message-box {
+    background: var(--c-surface-warm);
+    border-radius: var(--radius);
+    padding: 28px 32px;
+    margin-top: 28px;
+    border-left: 3px solid var(--c-accent-soft);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .message-box::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -20%;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(212,133,74,0.04) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .message-box p {
+    font-size: 14px;
+    line-height: 1.9;
+    color: var(--c-text);
+    position: relative;
+  }
+
+  /* ===== CTA BANNER ===== */
+  .cta-banner {
+    text-align: center;
+    padding: 96px 24px;
+    background: linear-gradient(160deg, var(--c-surface-warm) 0%, var(--c-accent-bg) 50%, var(--c-surface-warm) 100%);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cta-banner::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 500px;
+    height: 500px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(212,133,74,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .cta-banner .cta-title {
+    font-size: clamp(20px, 3vw, 28px);
+    font-weight: 700;
+    color: var(--c-text);
+    margin-bottom: 20px;
+    line-height: 1.55;
+    position: relative;
+  }
+
+  .cta-banner p {
+    font-size: 14px;
+    color: var(--c-text-sub);
+    line-height: 1.9;
+    max-width: 520px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  /* ===== FOOTER ===== */
+  .footer {
+    text-align: center;
+    padding: 36px 24px;
+    font-size: 12px;
+    color: var(--c-text-light);
+    border-top: 1px solid var(--c-border);
+  }
+
+  /* ===== ANIMATIONS ===== */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.7s cubic-bezier(0.23,1,0.32,1), transform 0.7s cubic-bezier(0.23,1,0.32,1);
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .reveal-stagger { transition-delay: calc(var(--i, 0) * 0.08s); }
+
+  .reveal-left {
+    opacity: 0;
+    transform: translateX(-24px);
+    transition: opacity 0.7s cubic-bezier(0.23,1,0.32,1), transform 0.7s cubic-bezier(0.23,1,0.32,1);
+  }
+
+  .reveal-left.visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  /* ===== PROGRESS BAR (top) ===== */
+  .progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--c-accent), var(--c-accent-deep));
+    z-index: 200;
+    width: 0%;
+    transition: width 0.1s;
+    border-radius: 0 2px 2px 0;
+  }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 600px) {
+    .section { padding: 60px 20px; }
+    .concern-grid { grid-template-columns: 1fr; }
+    .direction-block { padding: 24px 20px; }
+    .theme-items { padding-left: 0; }
+    .hero-meta { gap: 20px; }
+    .stat-bar { gap: 28px; padding: 24px 16px; }
+    .stat-num { font-size: 34px; }
+    .roadmap { padding-left: 32px; }
+    .roadmap-step { padding: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Progress bar -->
+<div class="progress-bar" id="progressBar"></div>
+
+<!-- ==================== HERO ==================== -->
+<section class="hero">
+  <canvas class="hero-canvas" id="heroCanvas"></canvas>
+  <div class="hero-label">Meeting Summary — Shared Document</div>
+  <h1>LaLaLand様<br><span class="hl">AI実装支援</span>のご提案方向性</h1>
+  <p class="hero-sub">
+    本日のミーティングで確認できた課題・ご要望・AI活用の可能性を整理し、今後の提案方向性として共有いたします。
+  </p>
+  <dl class="hero-meta">
+    <div><dt>Date</dt><dd>2026年5月8日</dd></div>
+    <div><dt>Prepared by</dt><dd>TOKON</dd></div>
+    <div><dt>Status</dt><dd>方向性共有（初回）</dd></div>
+  </dl>
+  <div class="hero-scroll-hint">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" color="#9B9790">
+      <path d="M12 5v14M5 12l7 7 7-7"/>
+    </svg>
+  </div>
+</section>
+
+<!-- ==================== TOC ==================== -->
+<nav class="toc" id="toc">
+  <div class="toc-inner">
+    <a href="#concerns">確認できた課題</a>
+    <a href="#direction">提案の方向性</a>
+    <a href="#themes">AI活用テーマ一覧</a>
+    <a href="#roadmap">ロードマップ</a>
+    <a href="#nextstep">次のステップ</a>
+  </div>
+</nav>
+
+<!-- ==================== SECTION 1: 確認できた課題 ==================== -->
+<section id="concerns" class="section">
+  <div class="reveal">
+    <div class="section-label">01 — Identified Challenges</div>
+    <h2 class="section-title">本日のミーティングで確認できた主な課題</h2>
+    <p class="section-lead">
+      経理・労務を中心に、日々の業務の中で時間と手間がかかっている領域が明確に浮かび上がりました。
+      同時に、グループ全体の情報管理やAI活用人材の育成に対する関心の高さも確認できました。
+    </p>
+  </div>
+
+  <div class="concern-grid">
+    <!-- Card 1: 経理 -->
+    <div class="concern-card reveal reveal-stagger" style="--i:0">
+      <div class="icon-box" style="background:var(--c-tag-eco-bg)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--c-tag-eco)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="13" y2="17"/>
+        </svg>
+      </div>
+      <h3>経理業務の手作業負担</h3>
+      <p>紙の領収書・小口精算の処理、勘定科目の手動判定、Money Forward連携用のCSV作成、園別の請求書作成など、繰り返し発生する転記・確認作業が多い。</p>
+    </div>
+    <!-- Card 2: 労務 -->
+    <div class="concern-card reveal reveal-stagger" style="--i:1">
+      <div class="icon-box" style="background:var(--c-tag-labor-bg)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--c-tag-labor)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
+          <line x1="9" y1="9" x2="15" y2="9"/><line x1="9" y1="13" x2="13" y2="13"/>
+        </svg>
+      </div>
+      <h3>労務・人事への問い合わせ対応</h3>
+      <p>就業規則・給与・休暇・各種制度に関する問い合わせが日常的に発生。入社手続きや証明書発行、行政提出用の集計など、定型的な確認・回答業務が負担に。</p>
+    </div>
+    <!-- Card 3: 情報散在 -->
+    <div class="concern-card reveal reveal-stagger" style="--i:2">
+      <div class="icon-box" style="background:var(--c-tag-dbox-bg)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--c-tag-dbox)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/>
+          <line x1="12" y1="11" x2="12" y2="17"/><line x1="9" y1="14" x2="15" y2="14"/>
+        </svg>
+      </div>
+      <h3>情報の散在と検索困難</h3>
+      <p>Dropbox・紙資料・個人の記憶の中に情報が分散。「あの資料どこにあったか」を探す時間が発生し、AIに参照させたくても情報が構造化されていない。</p>
+    </div>
+    <!-- Card 4: AI脳 -->
+    <div class="concern-card reveal reveal-stagger" style="--i:3">
+      <div class="icon-box" style="background:var(--c-tag-info-bg)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--c-tag-info)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="9"/>
+          <path d="M12 3c2.2 3.2 3.4 6.5 3.4 9s-1.2 5.8-3.4 9"/>
+          <path d="M12 3c-2.2 3.2-3.4 6.5-3.4 9s1.2 5.8 3.4 9"/>
+          <line x1="3" y1="12" x2="21" y2="12"/>
+        </svg>
+      </div>
+      <h3>「うちを知っている AI」への期待</h3>
+      <p>汎用AIではなく、LaLaLandの理念・判断基準・事業ごとの特性を理解したAIが欲しい。保育・飲食など事業ごとに異なる判断軸を反映させたい。</p>
+    </div>
+    <!-- Card 5: 精度懸念 -->
+    <div class="concern-card reveal reveal-stagger" style="--i:4">
+      <div class="icon-box" style="background:var(--c-tag-edu-bg)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--c-tag-edu)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          <polyline points="9,12 11,14 15,10"/>
+        </svg>
+      </div>
+      <h3>AI精度への懸念</h3>
+      <p>ハルシネーション（AIの誤情報生成）、日付のズレ、資料の抜けなど、既にAIツールを試した中で課題を認識。出典明示・ダブルチェック設計が必要。</p>
+    </div>
+    <!-- Card 6: 自走化 -->
+    <div class="concern-card reveal reveal-stagger" style="--i:5">
+      <div class="icon-box" style="background:var(--c-tag-self-bg)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--c-tag-self)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/>
+          <circle cx="12" cy="7" r="3"/><circle cx="18" cy="4" r="0" fill="var(--c-tag-self)"/><circle cx="6" cy="14" r="0" fill="var(--c-tag-self)"/>
+          <path d="M2 22h20"/>
+        </svg>
+      </div>
+      <h3>「自分たちでも作れるように」</h3>
+      <p>外注で完成品を受け取るだけでなく、社内メンバーがAIを使いこなし、業務改善ツールやプロンプトを自分たちで作れるようになりたいというご要望。</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"><hr></div>
+
+<!-- ==================== SECTION 2: 提案の方向性 ==================== -->
+<section id="direction" class="section">
+  <div class="reveal">
+    <div class="section-label">02 — Proposal Direction</div>
+    <h2 class="section-title">提案の方向性</h2>
+    <p class="section-lead">
+      今回のミーティングで見えてきたLaLaLand様のニーズを踏まえ、3つの柱で段階的にAI活用を進めていく方向性をご提案します。
+      短期の成果実感と、中長期の基盤づくりを両立する構成です。
+    </p>
+  </div>
+
+  <div class="direction-block phase1 reveal-left" style="transition-delay:0.1s">
+    <div class="direction-header">
+      <div class="icon-box" style="background:var(--c-tag-eco-bg)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--c-tag-eco)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="13,2 3,14 12,14 11,22 21,10 12,10"/>
+        </svg>
+      </div>
+      <div class="direction-number">Pillar 01</div>
+    </div>
+    <h3>経理・労務 クイック改善</h3>
+    <p>課題が具体的で、成果が見えやすい領域から着手します。現場の運用を大きく変えず、今ある紙・PDF・Excel・LINEの流れを活かしながら、管理側の確認・転記・検索・返信の負担を軽減します。</p>
+    <div class="direction-detail">
+      <strong>経理側の例：</strong>紙の領収書・請求書をPDF/画像化 → AIで読み取り → 勘定科目・金額・園名・日付を整理 → Money Forward連携用CSVや確認用一覧を出力。毎月の園別請求書作成も、元データを置くだけでExcel/PDFを生成する仕組みへ。<br><br>
+      <strong>労務側の例：</strong>就業規則・社内ルール・申請ルールを読み込ませたAIチャットボットで、職員からのよくある質問に自動回答。まずはWebチャットで開始し、LINE連携は契約・API可否を確認のうえ第2段階で検討。
+    </div>
+  </div>
+
+  <div class="direction-block phase2 reveal-left" style="transition-delay:0.2s">
+    <div class="direction-header">
+      <div class="icon-box" style="background:var(--c-tag-info-bg)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--c-tag-info)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>
+        </svg>
+      </div>
+      <div class="direction-number">Pillar 02</div>
+    </div>
+    <h3>LaLaLand AI脳 — 情報資産化プロジェクト</h3>
+    <p>「うちをちゃんと知っているAI」を作るために、まずLaLaLand様の情報をAIが扱える形に棚卸しするプロジェクトです。AIを作る前に、頭の中の情報・過去データ・Dropbox・紙資料を整理し、デジタル資産に変換します。</p>
+    <div class="direction-detail">
+      <strong>法人格AI：</strong>LaLaLandグループとしての理念、判断基準、大切にしている価値観、やること/やらないことを構造化。<br><br>
+      <strong>事業人格AI：</strong>保育事業・飲食事業など、事業ごとのサービス設計、価格体系、顧客対応、現場ルールを整理。<br><br>
+      <strong>個人格AI：</strong>代表・責任者・活躍人材の考え方、経験則、判断パターンをAIが参照できる形に。
+    </div>
+  </div>
+
+  <div class="direction-block phase3 reveal-left" style="transition-delay:0.3s">
+    <div class="direction-header">
+      <div class="icon-box" style="background:var(--c-tag-edu-bg)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--c-tag-edu)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/>
+          <path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/>
+        </svg>
+      </div>
+      <div class="direction-number">Pillar 03</div>
+    </div>
+    <h3>AI自走化 — 伴走支援プログラム</h3>
+    <p>「作ってもらって終わり」ではなく、LaLaLand様の中に「AIに仕事を頼める人」を増やすことで、業務や帳票形式が変わっても継続的に改善できる状態をつくります。</p>
+    <div class="direction-detail">
+      <strong>想定イメージ：</strong><br>
+      月1回：全体向けAI活用レクチャー<br>
+      月1〜2回：キーマン向け実践会（ChatGPT / Claude 等の使い分け、プロンプト改善、業務分解）<br>
+      随時：作りたいものリストの整理、小さなAIエージェント試作、業務別テンプレート構築<br><br>
+      <strong>成果物：</strong>自社で使えるプロンプト集、業務別AI活用テンプレート、初期AIエージェント
+    </div>
+  </div>
+
+  <div class="message-box reveal">
+    <p>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--c-accent)" stroke-width="2" stroke-linecap="round" style="vertical-align:-3px; margin-right:6px;">
+        <circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>
+      </svg>
+      初回の提案では<strong>「経理・労務の即効改善」+「情報棚卸し」+「自走化伴走」</strong>の3点を軸に進め、法人格AIやマーケティングAIは、その先に自然に広がる未来として位置づけます。
+    </p>
+  </div>
+</section>
+
+<div class="divider"><hr></div>
+
+<!-- ==================== SECTION 3: AI活用テーマ一覧 ==================== -->
+<section id="themes" class="section">
+  <div class="reveal">
+    <div class="section-label">03 — AI Theme Map</div>
+    <h2 class="section-title">本日出てきたAI活用テーマ一覧</h2>
+    <p class="section-lead">
+      今回のミーティングでは、非常に多くのAI活用テーマが話題に上りました。現時点で全てを一度に進める必要はありません。まずは「何ができそうか」を可視化し、優先順位をつけていきます。
+    </p>
+  </div>
+
+  <!-- Counter -->
+  <div class="stat-bar reveal">
+    <div class="stat-item">
+      <div class="stat-num" data-target="9">0</div>
+      <div class="stat-label">カテゴリ</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num" data-target="58">0</div>
+      <div class="stat-label">テーマ数</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num" data-target="1">0</div>
+      <div class="stat-label">回のミーティングで</div>
+    </div>
+  </div>
+
+  <!-- 経理 -->
+  <div class="theme-category reveal">
+    <div class="theme-category-header">
+      <div class="cat-icon" style="background:var(--c-tag-eco-bg)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--c-tag-eco)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="13" y2="17"/>
+        </svg>
+      </div>
+      <h3>経理・会計</h3>
+    </div>
+    <div class="theme-items">
+      <span class="theme-item">領収書・小口精算の読み取り</span>
+      <span class="theme-item">勘定科目の自動判定</span>
+      <span class="theme-item">Money Forward連携CSV作成</span>
+      <span class="theme-item">園別の精算データ整理</span>
+      <span class="theme-item">請求書の自動作成</span>
+      <span class="theme-item">Excel / PDF出力</span>
+      <span class="theme-item">税理士事務所への根拠資料検索</span>
+      <span class="theme-item">契約書・請求書・領収書の所在確認</span>
+    </div>
+  </div>
+
+  <!-- 労務 -->
+  <div class="theme-category reveal">
+    <div class="theme-category-header">
+      <div class="cat-icon" style="background:var(--c-tag-labor-bg)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--c-tag-labor)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
+          <line x1="9" y1="9" x2="15" y2="9"/><line x1="9" y1="13" x2="13" y2="13"/>
+        </svg>
+      </div>
+      <h3>労務・人事</h3>
+    </div>
+    <div class="theme-items">
+      <span class="theme-item">就業規則に基づく問い合わせ対応</span>
+      <span class="theme-item">給与・休暇・制度の自動回答</span>
+      <span class="theme-item">入社手続きの案内</span>
+      <span class="theme-item">証明書発行依頼の受付</span>
+      <span class="theme-item">産休・育休・休暇日数の自動計算</span>
+      <span class="theme-item">行政提出用の統計・調査資料作成</span>
+      <span class="theme-item">職員情報の検索・集計</span>
+    </div>
+  </div>
+
+  <!-- LINE -->
+  <div class="theme-category reveal">
+    <div class="theme-category-header">
+      <div class="cat-icon" style="background:var(--c-tag-line-bg)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--c-tag-line)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/>
+        </svg>
+      </div>
+      <h3>LINE・問い合わせ対応</h3>
+    </div>
+    <div class="theme-items">
+      <span class="theme-item">公式LINEとAIの連携</span>
+      <span class="theme-item">よくある質問への自動応答</span>
+      <span class="theme-item">入社予定者との手続き案内</span>
+      <span class="theme-item">メール代替導線の確保</span>
+      <span class="theme-item">LINE上の情報入力・確認フロー</span>
+      <span class="theme-item">問い合わせ履歴の整理</span>
+    </div>
+  </div>
+
+  <!-- Dropbox -->
+  <div class="theme-category reveal">
+    <div class="theme-category-header">
+      <div class="cat-icon" style="background:var(--c-tag-dbox-bg)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--c-tag-dbox)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/>
+          <line x1="12" y1="11" x2="12" y2="17"/><line x1="9" y1="14" x2="15" y2="14"/>
+        </svg>
+      </div>
+      <h3>Dropbox・社内情報検索</h3>
+    </div>
+    <div class="theme-items">
+      <span class="theme-item">Dropbox内の資料検索</span>
+      <span class="theme-item">園児・職員・事業別情報の参照</span>
+      <span class="theme-item">事業別フォルダのAI検索</span>
+      <span class="theme-item">必要資料の所在案内</span>
+      <span class="theme-item">社内マニュアル・FAQ・就業規則のRAG化</span>
+      <span class="theme-item">紙資料のPDF化とデジタル資産化</span>
+    </div>
+  </div>
+
+  <!-- 法人格AI -->
+  <div class="theme-category reveal">
+    <div class="theme-category-header">
+      <div class="cat-icon" style="background:var(--c-tag-corp-bg)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--c-tag-corp)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="9"/>
+          <path d="M12 3c2.2 3.2 3.4 6.5 3.4 9s-1.2 5.8-3.4 9"/>
+          <path d="M12 3c-2.2 3.2-3.4 6.5-3.4 9s1.2 5.8 3.4 9"/>
+          <line x1="3" y1="12" x2="21" y2="12"/>
+        </svg>
+      </div>
+      <h3>法人格・事業人格AI</h3>
+    </div>
+    <div class="theme-items">
+      <span class="theme-item">グループ全体の理念・判断軸を反映した法人格AI</span>
+      <span class="theme-item">保育・飲食など事業ごとの事業人格AI</span>
+      <span class="theme-item">代表・責任者の考え方を反映した個人格AI</span>
+      <span class="theme-item">会社らしい判断・発信ができるAI</span>
+      <span class="theme-item">壁打ち相手としての社長AI・会長AI</span>
+    </div>
+  </div>
+
+  <!-- 保育 -->
+  <div class="theme-category reveal">
+    <div class="theme-category-header">
+      <div class="cat-icon" style="background:var(--c-tag-nursery-bg)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--c-tag-nursery)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
+          <polyline points="9,22 9,12 15,12 15,22"/>
+        </svg>
+      </div>
+      <h3>保育・園運営</h3>
+    </div>
+    <div class="theme-items">
+      <span class="theme-item">園ごとの情報整理</span>
+      <span class="theme-item">職員配置・経験年数の確認</span>
+      <span class="theme-item">園児・職員情報の集計</span>
+      <span class="theme-item">保護者向け発信のチェック</span>
+      <span class="theme-item">活動記録の活用</span>
+      <span class="theme-item">行事をもとにしたブログ・PR文作成</span>
+    </div>
+  </div>
+
+  <!-- 広報 -->
+  <div class="theme-category reveal">
+    <div class="theme-category-header">
+      <div class="cat-icon" style="background:var(--c-tag-mkt-bg)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--c-tag-mkt)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+          <path d="M13.73 21a2 2 0 01-3.46 0"/>
+        </svg>
+      </div>
+      <h3>広報・マーケティング</h3>
+    </div>
+    <div class="theme-items">
+      <span class="theme-item">ブログ記事作成</span>
+      <span class="theme-item">生成AI検索対策（GEO）</span>
+      <span class="theme-item">SEO対策</span>
+      <span class="theme-item">Google Map / MEO対策</span>
+      <span class="theme-item">Googleビジネスプロフィール整備</span>
+      <span class="theme-item">口コミ返信・ネガティブレビュー対応</span>
+      <span class="theme-item">保護者向け情報発信</span>
+      <span class="theme-item">写真からの投稿文生成</span>
+      <span class="theme-item">Webバナー・画像生成</span>
+    </div>
+  </div>
+
+  <!-- AI人材育成 -->
+  <div class="theme-category reveal">
+    <div class="theme-category-header">
+      <div class="cat-icon" style="background:var(--c-tag-edu-bg)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--c-tag-edu)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/>
+          <path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/>
+        </svg>
+      </div>
+      <h3>AI活用人材育成</h3>
+    </div>
+    <div class="theme-items">
+      <span class="theme-item">ChatGPT / Claude / Gemini の使い分け</span>
+      <span class="theme-item">キーマン向けAI活用研修</span>
+      <span class="theme-item">業務をAIに依頼する練習</span>
+      <span class="theme-item">プロンプト改善</span>
+      <span class="theme-item">ハルシネーション対策</span>
+      <span class="theme-item">出典確認・ダブルチェックの習慣化</span>
+      <span class="theme-item">社内にAI会話が生まれる状態づくり</span>
+    </div>
+  </div>
+
+  <!-- 自走化 -->
+  <div class="theme-category reveal">
+    <div class="theme-category-header">
+      <div class="cat-icon" style="background:var(--c-tag-self-bg)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--c-tag-self)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/>
+        </svg>
+      </div>
+      <h3>自作・自走化支援</h3>
+    </div>
+    <div class="theme-items">
+      <span class="theme-item">簡単なWebアプリ作成</span>
+      <span class="theme-item">帳票作成ツールの自作</span>
+      <span class="theme-item">業務ごとの小さなAIエージェント</span>
+      <span class="theme-item">Claudeを使った業務改善アプリ試作</span>
+      <span class="theme-item">外注せずに社内で改善できる体制づくり</span>
+    </div>
+  </div>
+
+  <div class="message-box reveal">
+    <p>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--c-accent)" stroke-width="2" stroke-linecap="round" style="vertical-align:-3px; margin-right:6px;">
+        <path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/>
+      </svg>
+      今回出てきたテーマだけでも、すでに多くの活用可能性があります。各部署・各園で<strong>「AIに任せられそうなこと」「毎回時間がかかっていること」「人に聞かないと分からないこと」</strong>を洗い出していただくと、さらに具体的な支援テーマを整理できます。
+    </p>
+  </div>
+</section>
+
+<div class="divider"><hr></div>
+
+<!-- ==================== SECTION 4: ロードマップ ==================== -->
+<section id="roadmap" class="section">
+  <div class="reveal">
+    <div class="section-label">04 — Roadmap</div>
+    <h2 class="section-title">段階的な進め方のイメージ</h2>
+    <p class="section-lead">
+      全てを一度に進めるのではなく、まず成果が見えるところから着手し、段階的に広げていく進め方をご提案します。
+    </p>
+  </div>
+
+  <div class="roadmap">
+    <div class="roadmap-step reveal" style="transition-delay:0.1s">
+      <div class="roadmap-dot"><div class="dot-inner"></div></div>
+      <div class="phase-label">Phase 1</div>
+      <h4>業務ヒアリング ＋ クイックPoC</h4>
+      <p>経理と労務から各1テーマを選定。例えば経理なら「領収書PDF → 勘定科目/CSV化」、労務なら「就業規則FAQチャット」。最速で成果を体感していただきます。</p>
+    </div>
+    <div class="roadmap-step reveal" style="transition-delay:0.2s">
+      <div class="roadmap-dot"><div class="dot-inner"></div></div>
+      <div class="phase-label">Phase 2</div>
+      <h4>Dropbox・紙資料の情報棚卸し</h4>
+      <p>全社AIを作る前に、どの情報がどこにあるか、何をAIに参照させるべきかを整理。LaLaLand AI脳の土台となるデジタル資産化を進めます。</p>
+    </div>
+    <div class="roadmap-step reveal" style="transition-delay:0.3s">
+      <div class="roadmap-dot"><div class="dot-inner"></div></div>
+      <div class="phase-label">Phase 3</div>
+      <h4>法人格 / 事業人格AIの設計</h4>
+      <p>代表・責任者インタビュー、保育/飲食など事業別情報、過去の発信・パンフレット・理念・現場記録を構造化し、「LaLaLandらしさ」を持ったAIの設計に入ります。</p>
+    </div>
+    <div class="roadmap-step reveal" style="transition-delay:0.4s">
+      <div class="roadmap-dot"><div class="dot-inner"></div></div>
+      <div class="phase-label">Phase 4</div>
+      <h4>マーケ / 広報AI展開</h4>
+      <p>ブログ記事作成、保護者向け発信、MEO対策、口コミ返信、園の魅力発信へ展開。Phase 1〜3で築いた基盤の上に、対外発信のAI活用を広げます。</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"><hr></div>
+
+<!-- ==================== SECTION 5: ネクストステップ ==================== -->
+<section id="nextstep" class="section">
+  <div class="reveal">
+    <div class="section-label">05 — Next Steps</div>
+    <h2 class="section-title">次回までにご確認いただきたいこと</h2>
+    <p class="section-lead">
+      より具体的なご提案に進むために、以下の情報を次回のお打ち合わせまでにご準備いただけますと幸いです。
+    </p>
+  </div>
+
+  <div class="next-steps-list">
+    <div class="next-step-item reveal" style="transition-delay:0.05s">
+      <span class="next-step-num">1</span>
+      <p><strong>AIで実現したいことの洗い出し</strong><br>部署ごとに、重複しても構いませんので「AIにやってほしいこと」を自由に書き出してください。</p>
+    </div>
+    <div class="next-step-item reveal" style="transition-delay:0.1s">
+      <span class="next-step-num">2</span>
+      <p><strong>帳票・資料サンプルの共有</strong><br>経理・労務で特に負担の大きい帳票、紙資料、Excel、PDFのサンプルをお送りください。実際のデータをもとにPoC設計を行います。</p>
+    </div>
+    <div class="next-step-item reveal" style="transition-delay:0.15s">
+      <span class="next-step-num">3</span>
+      <p><strong>社内資料の所在確認</strong><br>就業規則、社内マニュアル、申請ルール、よくある質問など、AIに読み込ませる候補となる資料がどこにあるかをご確認ください。</p>
+    </div>
+    <div class="next-step-item reveal" style="transition-delay:0.2s">
+      <span class="next-step-num">4</span>
+      <p><strong>LINE公式アカウントの確認</strong><br>契約プラン、API利用の可否をご確認ください。AI連携の可否に影響します。</p>
+    </div>
+    <div class="next-step-item reveal" style="transition-delay:0.25s">
+      <span class="next-step-num">5</span>
+      <p><strong>Dropbox内の情報区分</strong><br>AIに参照させてよい情報と、参照させたくない情報について、大まかな切り分けのイメージをご確認ください。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== CTA ==================== -->
+<section class="cta-banner">
+  <div class="reveal">
+    <h2 class="cta-title">御社の中には、もうこれだけの<br>AI化の種があります。</h2>
+    <p>
+      今回のミーティングで確認できた課題やアイデアは、そのまま御社のAI活用の出発点になります。まずは一歩目として、短期で効果が出るテーマから一緒に取り組んでまいります。
+    </p>
+  </div>
+</section>
+
+<!-- ==================== FOOTER ==================== -->
+<footer class="footer">
+  <p>
+    TOKON<br>
+    本資料は方向性の共有を目的としたものであり、正式なお見積りや契約内容を含むものではありません。
+  </p>
+</footer>
+
+<script>
+// ===== Intersection Observer for reveals =====
+const revealObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      // Trigger counter animation
+      if (e.target.classList.contains('stat-bar')) animateCounters();
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.reveal, .reveal-left').forEach(el => revealObs.observe(el));
+
+// ===== Counter animation =====
+let countersAnimated = false;
+function animateCounters() {
+  if (countersAnimated) return;
+  countersAnimated = true;
+  document.querySelectorAll('.stat-num[data-target]').forEach(el => {
+    const target = +el.dataset.target;
+    const dur = 1200;
+    const start = performance.now();
+    function step(now) {
+      const t = Math.min((now - start) / dur, 1);
+      const ease = 1 - Math.pow(1 - t, 4); // ease-out quart
+      el.textContent = Math.round(target * ease);
+      if (t < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  });
+}
+
+// ===== Sticky nav shadow + active section =====
+const toc = document.getElementById('toc');
+const tocLinks = toc.querySelectorAll('a');
+const sections = document.querySelectorAll('section[id]');
+
+window.addEventListener('scroll', () => {
+  // Shadow
+  toc.classList.toggle('scrolled', window.scrollY > 100);
+
+  // Progress bar
+  const h = document.documentElement;
+  const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+  document.getElementById('progressBar').style.width = pct + '%';
+
+  // Active section
+  let current = '';
+  sections.forEach(s => {
+    if (window.scrollY >= s.offsetTop - 200) current = s.id;
+  });
+  tocLinks.forEach(a => {
+    a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+  });
+}, { passive: true });
+
+// ===== Concern card spotlight effect =====
+document.querySelectorAll('.concern-card').forEach(card => {
+  card.addEventListener('mousemove', e => {
+    const r = card.getBoundingClientRect();
+    card.style.setProperty('--mouse-x', (e.clientX - r.left) + 'px');
+    card.style.setProperty('--mouse-y', (e.clientY - r.top) + 'px');
+  });
+});
+
+// ===== Hero Canvas Particles =====
+(function() {
+  const canvas = document.getElementById('heroCanvas');
+  const ctx = canvas.getContext('2d');
+  let particles = [];
+  let w, h, dpr;
+
+  function resize() {
+    dpr = window.devicePixelRatio || 1;
+    w = canvas.parentElement.offsetWidth;
+    h = canvas.parentElement.offsetHeight;
+    canvas.width = w * dpr;
+    canvas.height = h * dpr;
+    canvas.style.width = w + 'px';
+    canvas.style.height = h + 'px';
+    ctx.scale(dpr, dpr);
+  }
+
+  function init() {
+    resize();
+    particles = [];
+    const count = Math.min(Math.floor(w * h / 12000), 80);
+    for (let i = 0; i < count; i++) {
+      particles.push({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        r: Math.random() * 2.5 + 1,
+        vx: (Math.random() - 0.5) * 0.3,
+        vy: -Math.random() * 0.25 - 0.05,
+        hue: 25 + Math.random() * 20,
+        alpha: Math.random() * 0.25 + 0.08,
+        phase: Math.random() * Math.PI * 2
+      });
+    }
+  }
+
+  let t = 0;
+  function draw() {
+    ctx.clearRect(0, 0, w, h);
+    t += 0.005;
+    particles.forEach(p => {
+      p.x += p.vx + Math.sin(t + p.phase) * 0.15;
+      p.y += p.vy;
+      p.hue += 0.02;
+
+      if (p.y < -10) { p.y = h + 10; p.x = Math.random() * w; }
+      if (p.x < -10) p.x = w + 10;
+      if (p.x > w + 10) p.x = -10;
+
+      const a = p.alpha * (0.7 + 0.3 * Math.sin(t * 2 + p.phase));
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = `hsla(${p.hue}, 55%, 65%, ${a})`;
+      ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+
+  init();
+  draw();
+  window.addEventListener('resize', init);
+})();
+</script>
+</body>
+</html>
